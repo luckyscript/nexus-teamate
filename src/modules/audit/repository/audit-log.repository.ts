@@ -1,7 +1,7 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseRepository, PageResult } from '../../../framework/db/base.repository';
+import { PageResult } from '../../../framework/db/base.repository';
 import { AuditLogEntity } from '../entity/audit-log.entity';
 
 export interface AuditLogFilters {
@@ -15,13 +15,13 @@ export interface AuditLogFilters {
 }
 
 @Provide()
-export class AuditLogRepository extends BaseRepository<AuditLogEntity> {
+export class AuditLogRepository {
   @InjectEntityModel(AuditLogEntity)
-  auditLogModel: Repository<AuditLogEntity>;
+  protected repository: Repository<AuditLogEntity>;
 
   async create(auditLog: Partial<AuditLogEntity>): Promise<AuditLogEntity> {
-    const entity = this.auditLogModel.create(auditLog);
-    return this.auditLogModel.save(entity);
+    const entity = this.repository.create(auditLog);
+    return this.repository.save(entity);
   }
 
   async findAll(
@@ -58,7 +58,7 @@ export class AuditLogRepository extends BaseRepository<AuditLogEntity> {
         dateConditions.push('audit_log.createdAt <= ?');
         params.push(filters.dateTo);
       }
-      const [list, total] = await this.auditLogModel
+      const [list, total] = await this.repository
         .createQueryBuilder('audit_log')
         .where(Object.entries(where).reduce((acc, [key, value]) => {
           (acc as Record<string, unknown>)[`audit_log.${key}`] = value;
@@ -72,9 +72,13 @@ export class AuditLogRepository extends BaseRepository<AuditLogEntity> {
       return { list, total, page, pageSize };
     }
 
-    return this.findAndPaginate(where as any, page, pageSize, {
-      orderBy: { createdAt: 'DESC' },
+    const [list, total] = await this.repository.findAndCount({
+      where: where as any,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { createdAt: 'DESC' },
     });
+    return { list, total, page, pageSize };
   }
 
   async findByResource(
@@ -85,8 +89,12 @@ export class AuditLogRepository extends BaseRepository<AuditLogEntity> {
     pageSize: number,
   ): Promise<PageResult<AuditLogEntity>> {
     const where = { tenantId, resourceType, resourceId };
-    return this.findAndPaginate(where as any, page, pageSize, {
-      orderBy: { createdAt: 'DESC' },
+    const [list, total] = await this.repository.findAndCount({
+      where: where as any,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { createdAt: 'DESC' },
     });
+    return { list, total, page, pageSize };
   }
 }

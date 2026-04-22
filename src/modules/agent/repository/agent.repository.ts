@@ -1,14 +1,12 @@
-import { Provide, Inject } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository, Like } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { AgentDefinitionEntity } from '../entity/agent-definition.entity';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
 @Provide()
-export class AgentRepository extends BaseRepository<AgentDefinitionEntity> {
+export class AgentRepository {
   @InjectEntityModel(AgentDefinitionEntity)
-  @Inject()
   protected repository: Repository<AgentDefinitionEntity>;
 
   async findAll(

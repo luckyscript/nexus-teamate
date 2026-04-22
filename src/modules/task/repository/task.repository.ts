@@ -1,12 +1,12 @@
-import { Provide, InjectDataSource } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
+import { InjectDataSource } from '@midwayjs/typeorm';
 import { DataSource } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { TaskEntity } from '../entity/task.entity';
 import { TaskLabelEntity } from '../entity/task-label.entity';
 import { TaskEventEntity } from '../entity/task-event.entity';
 
 @Provide()
-export class TaskRepository extends BaseRepository<TaskEntity> {
+export class TaskRepository {
   @InjectDataSource()
   dataSource: DataSource;
 

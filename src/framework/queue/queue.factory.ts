@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum, Inject } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Inject } from '@midwayjs/core';
 import { Queue, Worker, QueueOptions, WorkerOptions, ConnectionOptions } from 'bullmq';
 import { QUEUE_NAMES, QueueName } from './queue.constants';
 import Redis from 'ioredis';
@@ -8,7 +8,7 @@ export interface QueueFactoryConfig {
   prefix?: string;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class QueueFactory {
   private queues: Map<QueueName, Queue> = new Map();

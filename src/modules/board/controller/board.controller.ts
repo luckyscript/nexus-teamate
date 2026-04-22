@@ -8,6 +8,7 @@ import {
   Body,
   Query,
   Inject,
+  Provide,
 } from '@midwayjs/core';
 import { BoardAppService } from '../app/board-app.service';
 import {
@@ -18,8 +19,12 @@ import {
 } from '../dto/board.dto';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
+@Provide()
 @Controller('/api/v1')
 export class BoardController {
+  @Inject()
+  ctx: any;
+
   @Inject()
   boardAppService: BoardAppService;
 

@@ -1,7 +1,9 @@
+import { Provide } from '@midwayjs/core';
 import { Controller, Get, Query, Param, Inject } from '@midwayjs/core';
 import { AuditService, AuditLogQuery } from '../service/audit.service';
 import { CurrentUser, CurrentUserService } from '../../../framework/auth/current-user.service';
 
+@Provide()
 @Controller('/api/v1/audit')
 export class AuditController {
   @Inject()

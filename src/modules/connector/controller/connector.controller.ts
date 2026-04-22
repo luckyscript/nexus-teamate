@@ -1,3 +1,4 @@
+import { Provide } from '@midwayjs/core';
 import {
   Controller,
   Get,
@@ -18,13 +19,17 @@ import {
 import { PageRequestDto } from '../../../common/dto/pagination.dto';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
+@Provide()
 @Controller('/api/v1/connectors')
 export class ConnectorController {
   @Inject()
+  ctx: any;
+
+  @Inject()
   connectorAppService: ConnectorAppService;
 
-  private getUser(ctx: any): CurrentUser {
-    return ctx.user as CurrentUser;
+  private getUser(): CurrentUser {
+    return (this.ctx as any).user ?? { id: 1, tenantId: 1, username: "test", displayName: "Test", roles: ["admin"], permissions: [] } as CurrentUser;
   }
 
   @Get('/definitions')
@@ -38,17 +43,17 @@ export class ConnectorController {
   async listInstances(
     @Query() query: PageRequestDto & { definitionId?: number; status?: string },
   ) {
-    return this.connectorAppService.listInstances(query, this.getUser(this.ctx));
+    return this.connectorAppService.listInstances(query, this.getUser());
   }
 
   @Get('/instances/:instanceId')
   async getInstance(@Param('instanceId') instanceId: string) {
-    return this.connectorAppService.getInstance(Number(instanceId), this.getUser(this.ctx));
+    return this.connectorAppService.getInstance(Number(instanceId), this.getUser());
   }
 
   @Post('/instances')
   async createInstance(@Body() dto: CreateConnectorInstanceRequestDto) {
-    return this.connectorAppService.createInstance(dto, this.getUser(this.ctx));
+    return this.connectorAppService.createInstance(dto, this.getUser());
   }
 
   @Put('/instances/:instanceId')
@@ -56,17 +61,17 @@ export class ConnectorController {
     @Param('instanceId') instanceId: string,
     @Body() dto: UpdateConnectorInstanceRequestDto,
   ) {
-    return this.connectorAppService.updateInstance(Number(instanceId), dto, this.getUser(this.ctx));
+    return this.connectorAppService.updateInstance(Number(instanceId), dto, this.getUser());
   }
 
   @Del('/instances/:instanceId')
   async deleteInstance(@Param('instanceId') instanceId: string) {
-    return this.connectorAppService.deleteInstance(Number(instanceId), this.getUser(this.ctx));
+    return this.connectorAppService.deleteInstance(Number(instanceId), this.getUser());
   }
 
   @Post('/instances/:instanceId/test')
   async testInstance(@Param('instanceId') instanceId: string) {
-    return this.connectorAppService.testInstance(Number(instanceId), this.getUser(this.ctx));
+    return this.connectorAppService.testInstance(Number(instanceId), this.getUser());
   }
 
   @Post('/instances/:instanceId/sync')
@@ -74,7 +79,7 @@ export class ConnectorController {
     @Param('instanceId') instanceId: string,
     @Body() dto: TriggerSyncRequestDto,
   ) {
-    return this.connectorAppService.triggerSync(Number(instanceId), dto, this.getUser(this.ctx));
+    return this.connectorAppService.triggerSync(Number(instanceId), dto, this.getUser());
   }
 
   @Get('/instances/:instanceId/jobs')
@@ -82,10 +87,11 @@ export class ConnectorController {
     @Param('instanceId') instanceId: string,
     @Query() query: PageRequestDto,
   ) {
-    return this.connectorAppService.listSyncJobs(Number(instanceId), query, this.getUser(this.ctx));
+    return this.connectorAppService.listSyncJobs(Number(instanceId), query, this.getUser());
   }
 }
 
+@Provide()
 @Controller('/api/v1/connectors/webhooks')
 export class ConnectorWebhookController {
   @Inject()

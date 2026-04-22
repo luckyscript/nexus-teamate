@@ -1,7 +1,7 @@
-import { Injectable, Scope, ScopeEnum, Inject } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Inject } from '@midwayjs/core';
 import { RedisService } from './redis.service';
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class DistributedLockService {
   @Inject()

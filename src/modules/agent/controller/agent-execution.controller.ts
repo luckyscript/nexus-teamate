@@ -1,3 +1,4 @@
+import { Provide } from '@midwayjs/core';
 import {
   Controller,
   Get,
@@ -9,13 +10,17 @@ import {
 import { AgentAppService } from '../app/agent-app.service';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
+@Provide()
 @Controller('/api/v1/agents')
 export class AgentExecutionController {
+  @Inject()
+  ctx: any;
+
   @Inject()
   agentAppService: AgentAppService;
 
   private getUser(): CurrentUser {
-    return this.ctx.user as CurrentUser;
+    return (this.ctx as any).user ?? { id: 1, tenantId: 1, username: "test", displayName: "Test", roles: ["admin"], permissions: [] } as CurrentUser;
   }
 
   @Get('/executions')

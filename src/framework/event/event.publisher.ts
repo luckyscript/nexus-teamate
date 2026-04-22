@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum, Inject } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Inject } from '@midwayjs/core';
 import { EVENT_NAMES, EventName } from './event.constants';
 import { OutboxService } from './outbox.service';
 
@@ -12,7 +12,7 @@ export interface DomainEvent<T = unknown> {
   requestId?: string;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class EventPublisher {
   @Inject()

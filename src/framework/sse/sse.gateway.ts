@@ -1,4 +1,4 @@
-import { Inject, Injectable, Scope, ScopeEnum } from '@midwayjs/core';
+import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { SSEService } from './sse.service';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,7 +8,7 @@ export interface SSEConnectionOptions {
   topics?: string[];
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class SSEGateway {
   @Inject()

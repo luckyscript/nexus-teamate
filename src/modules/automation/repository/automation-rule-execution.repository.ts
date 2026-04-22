@@ -1,13 +1,11 @@
-import { Inject, Provide } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { AutomationRuleExecutionEntity } from '../entity/automation-rule-execution.entity';
 
 @Provide()
-export class AutomationRuleExecutionRepository extends BaseRepository<AutomationRuleExecutionEntity> {
+export class AutomationRuleExecutionRepository {
   @InjectEntityModel(AutomationRuleExecutionEntity)
-  @Inject()
   protected repository: Repository<AutomationRuleExecutionEntity>;
 
   async create(

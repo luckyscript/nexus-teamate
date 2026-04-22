@@ -1,14 +1,12 @@
-import { Provide, Inject } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { AssetBindingEntity } from '../entity/asset-binding.entity';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
 @Provide()
-export class AssetBindingRepository extends BaseRepository<AssetBindingEntity> {
+export class AssetBindingRepository {
   @InjectEntityModel(AssetBindingEntity)
-  @Inject()
   protected repository: Repository<AssetBindingEntity>;
 
   async create(

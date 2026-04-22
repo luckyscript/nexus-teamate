@@ -1,5 +1,5 @@
 import { Queue, JobsOptions } from 'bullmq';
-import { Inject, Injectable, Scope, ScopeEnum } from '@midwayjs/core';
+import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { QUEUE_NAMES, QUEUE_OPTIONS, QueueName } from './queue.constants';
 
 export interface JobData<T = unknown> {
@@ -8,7 +8,7 @@ export interface JobData<T = unknown> {
   metadata?: Record<string, unknown>;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class QueueService {
   @Inject()

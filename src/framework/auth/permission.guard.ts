@@ -1,7 +1,7 @@
-import { Inject, Injectable, Scope, ScopeEnum } from '@midwayjs/core';
+import { Inject, Provide, Scope, ScopeEnum } from '@midwayjs/core';
 import { CurrentUserService } from './current-user.service';
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class PermissionService {
   @Inject()

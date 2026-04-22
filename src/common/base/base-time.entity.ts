@@ -8,9 +8,9 @@ export abstract class BaseTimeEntity {
   @PrimaryGeneratedColumn({ type: 'bigint', unsigned: true })
   id: number;
 
-  @CreateDateColumn({ type: 'datetime', precision: 3 })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime', precision: 3 })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

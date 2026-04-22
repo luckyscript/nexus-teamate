@@ -1,7 +1,9 @@
+import { Provide } from '@midwayjs/core';
 import { Controller, Get, Inject, Query } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
 import { SSEGateway } from '../../../framework/sse/sse.gateway';
 
+@Provide()
 @Controller('/api/v1/system')
 export class StreamController {
   @Inject()

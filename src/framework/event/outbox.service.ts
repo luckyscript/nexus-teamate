@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum, Inject } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Inject } from '@midwayjs/core';
 import { InjectDataSource } from '@midwayjs/typeorm';
 import { DataSource, Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { QUEUE_NAMES } from '../queue/queue.constants';
@@ -40,7 +40,7 @@ export class OutboxEvent {
   updatedAt: Date;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class OutboxService {
   @InjectDataSource()

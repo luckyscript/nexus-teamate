@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Inject } from '@midwayjs/core';
 
 export interface CurrentUser {
   id: number;
@@ -11,20 +11,23 @@ export interface CurrentUser {
 
 const CURRENT_USER_KEY = 'ctx.currentUser';
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Request, { allowDowngrade: true })
 export class CurrentUserService {
   private currentUser: CurrentUser | null = null;
+
+  @Inject()
+  ctx: any;
 
   setUser(user: CurrentUser): void {
     this.currentUser = user;
   }
 
   async getUser(): Promise<CurrentUser> {
-    if (!this.currentUser) {
-      throw new Error('UNAUTHORIZED: No current user in context');
-    }
-    return this.currentUser;
+    if (this.currentUser) return this.currentUser;
+    // Fallback: check ctx.user (set by mock middleware)
+    if (this.ctx?.user) return this.ctx.user;
+    throw new Error('UNAUTHORIZED: No current user in context');
   }
 
   async getUserId(): Promise<number> {

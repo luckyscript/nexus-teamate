@@ -1,24 +1,18 @@
-import { Provide, Inject } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository, Like } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { SkillEntity } from '../entity/skill.entity';
 import { CapsuleEntity } from '../entity/capsule.entity';
 import { TemplateEntity } from '../entity/template.entity';
 import { CurrentUser } from '../../../framework/auth/current-user.service';
 
 @Provide()
-export class AssetRepository extends BaseRepository<SkillEntity> {
+export class AssetRepository {
   @InjectEntityModel(SkillEntity)
-  @Inject()
   protected repository: Repository<SkillEntity>;
 
-  @InjectEntityModel(CapsuleEntity)
-  @Inject()
   private capsuleRepository: Repository<CapsuleEntity>;
 
-  @InjectEntityModel(TemplateEntity)
-  @Inject()
   private templateRepository: Repository<TemplateEntity>;
 
   async findSkills(

@@ -1,3 +1,4 @@
+import { Provide } from '@midwayjs/core';
 import { Controller, Get, Post, Put, Body, Param, Query } from '@midwayjs/core';
 import { Inject } from '@midwayjs/core';
 import {
@@ -10,6 +11,7 @@ import { AutomationAppService, ListRulesQuery } from '../app/automation-app.serv
 import { CurrentUser, CurrentUserService } from '../../../framework/auth/current-user.service';
 import { PageRequestDto } from '../../../common/dto/pagination.dto';
 
+@Provide()
 @Controller('/api/v1/automation')
 export class AutomationRuleController {
   @Inject()

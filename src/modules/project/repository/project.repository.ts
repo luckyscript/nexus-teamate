@@ -1,11 +1,17 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Repository, Like } from 'typeorm';
-import { BaseRepository, PageResult } from '../../../framework/db/base.repository';
+import { Repository, Like, FindOptionsOrder } from 'typeorm';
 import { ProjectEntity } from '../entity/project.entity';
 
+export interface PageResult<T> {
+  list: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+}
+
 @Provide()
-export class ProjectRepository extends BaseRepository<ProjectEntity> {
+export class ProjectRepository {
   @InjectEntityModel(ProjectEntity)
   projectModel: Repository<ProjectEntity>;
 
@@ -23,9 +29,13 @@ export class ProjectRepository extends BaseRepository<ProjectEntity> {
     if (keyword) {
       where.name = Like(`%${keyword}%`);
     }
-    return this.findAndPaginate(where as any, page, pageSize, {
-      orderBy: { createdAt: 'DESC' },
+    const [list, total] = await this.projectModel.findAndCount({
+      where: where as any,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { createdAt: 'DESC' } as FindOptionsOrder<ProjectEntity>,
     });
+    return { list, total, page, pageSize };
   }
 
   async findById(id: number, tenantId: number): Promise<ProjectEntity | null> {

@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum, Config } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Config } from '@midwayjs/core';
 import * as jwt from 'jsonwebtoken';
 
 export interface JwtPayload {
@@ -11,7 +11,7 @@ export interface JwtPayload {
   exp?: number;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class JwtService {
   @Config('jwt')

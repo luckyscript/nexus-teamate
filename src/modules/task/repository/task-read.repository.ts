@@ -1,6 +1,6 @@
-import { Provide, InjectDataSource } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
+import { InjectDataSource } from '@midwayjs/typeorm';
 import { DataSource, Like } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { TaskEntity } from '../entity/task.entity';
 import { TaskLabelEntity } from '../entity/task-label.entity';
 import { TaskCommentEntity } from '../entity/task-comment.entity';
@@ -23,7 +23,7 @@ export interface StatusColumnDef {
 }
 
 @Provide()
-export class TaskReadRepository extends BaseRepository<TaskEntity> {
+export class TaskReadRepository {
   @InjectDataSource()
   dataSource: DataSource;
 

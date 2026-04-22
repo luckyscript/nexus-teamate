@@ -1,13 +1,13 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseRepository, PageResult } from '../../../framework/db/base.repository';
+import { PageResult } from '../../../framework/db/base.repository';
 import { ConnectorDefinitionEntity } from '../entity/connector-definition.entity';
 import { ConnectorInstanceEntity } from '../entity/connector-instance.entity';
 import { ConnectorSyncJobEntity } from '../entity/connector-sync-job.entity';
 
 @Provide()
-export class ConnectorRepository extends BaseRepository<ConnectorInstanceEntity> {
+export class ConnectorRepository {
   @InjectEntityModel(ConnectorDefinitionEntity)
   definitionModel: Repository<ConnectorDefinitionEntity>;
 
@@ -46,9 +46,13 @@ export class ConnectorRepository extends BaseRepository<ConnectorInstanceEntity>
     if (filters.status) {
       where.status = filters.status;
     }
-    return this.findAndPaginate(where as any, page, pageSize, {
-      orderBy: { createdAt: 'DESC' },
+    const [list, total] = await this.instanceModel.findAndCount({
+      where: where as any,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { createdAt: 'DESC' },
     });
+    return { list, total, page, pageSize };
   }
 
   async findInstanceById(
@@ -92,12 +96,13 @@ export class ConnectorRepository extends BaseRepository<ConnectorInstanceEntity>
     page: number,
     pageSize: number,
   ): Promise<PageResult<ConnectorSyncJobEntity>> {
-    return this.findAndPaginate(
-      { tenantId, instanceId } as any,
-      page,
-      pageSize,
-      { orderBy: { createdAt: 'DESC' } },
-    );
+    const [list, total] = await this.syncJobModel.findAndCount({
+      where: { tenantId, instanceId } as any,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { createdAt: 'DESC' },
+    });
+    return { list, total, page, pageSize };
   }
 
   async findLatestSyncJob(

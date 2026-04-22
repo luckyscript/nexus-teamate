@@ -1,15 +1,13 @@
-import { Inject, Provide } from '@midwayjs/core';
+import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseRepository } from '../../../framework/db/base.repository';
 import { BoardEntity } from '../entity/board.entity';
 import { BoardColumnEntity } from '../entity/board-column.entity';
 import { WorkflowStateTransitionEntity } from '../entity/workflow-state-transition.entity';
 
 @Provide()
-export class BoardRepository extends BaseRepository<BoardEntity> {
+export class BoardRepository {
   @InjectEntityModel(BoardEntity)
-  @Inject()
   protected repository: Repository<BoardEntity>;
 
   @InjectEntityModel(BoardColumnEntity)

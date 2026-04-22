@@ -1,7 +1,7 @@
-import { Injectable, Scope, ScopeEnum, Config, Init } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum, Config, Init } from '@midwayjs/core';
 import Redis, { RedisOptions } from 'ioredis';
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class RedisService {
   private client: Redis;

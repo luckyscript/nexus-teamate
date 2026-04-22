@@ -1,4 +1,4 @@
-import { Injectable, Scope, ScopeEnum } from '@midwayjs/core';
+import { Provide, Scope, ScopeEnum } from '@midwayjs/core';
 
 export interface SSEClient {
   id: string;
@@ -9,7 +9,7 @@ export interface SSEClient {
   lastActivity: Date;
 }
 
-@Injectable()
+@Provide()
 @Scope(ScopeEnum.Singleton)
 export class SSEService {
   private clients: Map<string, SSEClient> = new Map();

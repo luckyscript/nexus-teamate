@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Inject,
+  Provide,
 } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
 import { TaskAppService } from '../app/task-app.service';
@@ -57,6 +58,7 @@ function getCurrentUser(ctx: Context) {
   };
 }
 
+@Provide()
 @Controller('/api/v1')
 export class TaskController {
   @Inject()
