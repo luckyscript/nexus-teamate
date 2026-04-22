@@ -46,7 +46,7 @@ export default {
         username: process.env.MYSQL_USERNAME || 'root',
         password: process.env.MYSQL_PASSWORD || '',
         database: process.env.MYSQL_DATABASE || 'nexus_teammate',
-        logging: true,
+        logging: false,
         synchronize: true,
         entities: [
           ProjectEntity, BoardEntity, BoardColumnEntity, WorkflowStateTransitionEntity,

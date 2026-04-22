@@ -33,10 +33,10 @@ export class OutboxEvent {
   @Column({ name: 'next_retry_at', type: 'datetime', precision: 3, nullable: true })
   nextRetryAt: Date;
 
-  @CreateDateColumn({ type: 'datetime', precision: 3 })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime', precision: 3 })
+  @UpdateDateColumn()
   updatedAt: Date;
 }
 
